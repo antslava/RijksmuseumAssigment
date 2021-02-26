@@ -6,6 +6,10 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.antmobile.ah.rijksmuseum.BuildConfig
+import org.antmobile.ah.rijksmuseum.app.converters.ErrorConverter
+import org.antmobile.ah.rijksmuseum.app.converters.ErrorConverterImpl
+import org.antmobile.ah.rijksmuseum.app.list.ArtListUiItemMerger
+import org.antmobile.ah.rijksmuseum.app.list.ArtListViewModel
 import org.antmobile.ah.rijksmuseum.data.remote.LanguageProvider
 import org.antmobile.ah.rijksmuseum.data.remote.RijksMuseumApi
 import org.antmobile.ah.rijksmuseum.data.remote.datasource.ArtsRemoteDataSourceImpl
@@ -17,6 +21,7 @@ import org.antmobile.ah.rijksmuseum.domain.repositories.ArtsRepository
 import org.antmobile.ah.rijksmuseum.domain.usecases.GetArtDetailsByIdUseCase
 import org.antmobile.ah.rijksmuseum.domain.usecases.GetListOfArtsUseCase
 import org.antmobile.ah.rijksmuseum.utils.CoroutinesDispatcherProvider
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -24,6 +29,9 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 val appModule = module {
+
+    viewModel { ArtListViewModel(get(), get(), get()) }
+
     single {
         CoroutinesDispatcherProvider(
             Dispatchers.Main,
@@ -31,6 +39,10 @@ val appModule = module {
             Dispatchers.IO
         )
     }
+
+    factory<ErrorConverter> { ErrorConverterImpl(get()) }
+
+    factory { ArtListUiItemMerger() }
 }
 
 val domainModule = module {

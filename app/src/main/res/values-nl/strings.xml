@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Rijksmuseum</string>
 
+    <string name="retry">Probeer opnieuw</string>
+    <string name="refresh">Vernieuwen</string>
+
     <string name="error_no_internet_connection">Geen internet. Probeer het later alstublieft.</string>
     <string name="error_wrong_art_id">Item %s bestaat niet</string>
     <string name="error_general">Er gaat iets mis!</string>
