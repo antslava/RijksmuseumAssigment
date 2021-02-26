@@ -8,6 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.antmobile.ah.rijksmuseum.BuildConfig
 import org.antmobile.ah.rijksmuseum.app.converters.ErrorConverter
 import org.antmobile.ah.rijksmuseum.app.converters.ErrorConverterImpl
+import org.antmobile.ah.rijksmuseum.app.details.ArtDetailViewModel
 import org.antmobile.ah.rijksmuseum.app.list.ArtListUiItemMerger
 import org.antmobile.ah.rijksmuseum.app.list.ArtListViewModel
 import org.antmobile.ah.rijksmuseum.data.remote.LanguageProvider
@@ -31,6 +32,8 @@ import java.util.concurrent.TimeUnit
 val appModule = module {
 
     viewModel { ArtListViewModel(get(), get(), get()) }
+
+    viewModel { ArtDetailViewModel(get(), get()) }
 
     single {
         CoroutinesDispatcherProvider(

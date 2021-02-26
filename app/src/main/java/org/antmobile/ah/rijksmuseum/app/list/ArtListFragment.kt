@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import org.antmobile.ah.rijksmuseum.R
+import org.antmobile.ah.rijksmuseum.app.details.ArtDetailsFragment
 import org.antmobile.ah.rijksmuseum.databinding.ArtListFragmentBinding
 import org.antmobile.ah.rijksmuseum.domain.models.Art
 import org.antmobile.ah.rijksmuseum.utils.InfiniteScrollListener
@@ -104,7 +106,11 @@ class ArtListFragment : Fragment() {
     }
 
     private fun onArtClicked(item: Art) {
-
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(R.id.container, ArtDetailsFragment.newInstance(item.id), ArtDetailsFragment.TAG)
+            addToBackStack(null)
+        }
     }
 
     companion object {
