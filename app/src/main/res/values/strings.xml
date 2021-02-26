@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Rijksmuseum</string>
+
+    <string name="error_no_internet_connection">No Internet. Please try later.</string>
+    <string name="error_wrong_art_id">Item %s not exist</string>
+    <string name="error_general">Something goes wrong!</string>
 </resources>
