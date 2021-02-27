@@ -19,18 +19,19 @@ class ArtListUiItemMergerTest {
         "twoLongTitle",
         artOne.principalOrFirstMaker
     )
-    private val threeTwo = Art(
+    private val artThree = Art(
         "threeId",
         "threeTitle",
         "threeLongTitle",
         "threePrincipalOrFirstMaker"
     )
-    private val oldItems = arrayListOf(
+    private val oldItemsWithLoadMore = arrayListOf(
         ArtListUiItem.Section(artOne.principalOrFirstMaker),
         ArtListUiItem.Item(artOne),
-        ArtListUiItem.Item(artTwo)
+        ArtListUiItem.Item(artTwo),
+        ArtListUiItem.LoadMore
     )
-    private val additionalItems = arrayListOf(threeTwo)
+    private val additionalItems = arrayListOf(artThree)
 
     @Test
     fun `when all list are empty and there no more data to load then empty list should be returned`() {
@@ -44,19 +45,22 @@ class ArtListUiItemMergerTest {
 
     @Test
     fun `when can load more is true then last item should be load more`() {
+        val additionalItemsSectionAmount = 1
+        val expectedSize =
+            oldItemsWithLoadMore.size + additionalItems.size + additionalItemsSectionAmount
         val result = merger.merge(
-            oldItems = oldItems,
+            oldItems = oldItemsWithLoadMore,
             additionalItems = additionalItems,
             canLoadMore = true
         )
-        assertThat(result).hasSize(oldItems.size + additionalItems.size + 2)
+        assertThat(result).hasSize(expectedSize)
         assertThat(result.last()).isInstanceOf(ArtListUiItem.LoadMore::class.java)
     }
 
     @Test
     fun `when can load more is true then list should contain one load more item`() {
         val result = merger.merge(
-            oldItems = oldItems,
+            oldItems = oldItemsWithLoadMore,
             additionalItems = additionalItems,
             canLoadMore = true
         )
@@ -65,24 +69,68 @@ class ArtListUiItemMergerTest {
     }
 
     @Test
-    fun `when can load more false then last item should not be load more`() {
+    fun `when can load more is false then last item should not be load more`() {
+        val additionalItemsSectionAmount = 1
+        val expectedSize =
+            oldItemsWithLoadMore.size - 1 + additionalItems.size + additionalItemsSectionAmount
         val result = merger.merge(
-            oldItems = oldItems,
+            oldItems = oldItemsWithLoadMore,
             additionalItems = additionalItems,
             canLoadMore = false
         )
-        assertThat(result).hasSize(oldItems.size + additionalItems.size + 1)
+        assertThat(result).hasSize(expectedSize)
         assertThat(result.last()).isNotInstanceOf(ArtListUiItem.LoadMore::class.java)
     }
 
     @Test
-    fun `when can load more false then list should not contain load more item`() {
+    fun `when can load more is false then list should not contain load more item`() {
         val result = merger.merge(
-            oldItems = oldItems,
+            oldItems = oldItemsWithLoadMore,
             additionalItems = additionalItems,
             canLoadMore = false
         )
         assertThat(result).doesNotContain(ArtListUiItem.LoadMore)
     }
+
+    @Test
+    fun `verify that result will contain correct headers`() {
+        val additionalItems = listOf(artOne, artTwo, artThree)
+        val correctAmountOfHeaders = 2
+        val firstHeader = ArtListUiItem.Section(artOne.principalOrFirstMaker)
+        val secondHeader = ArtListUiItem.Section(artThree.principalOrFirstMaker)
+
+        val result = merger.merge(
+            oldItems = oldItemsWithLoadMore,
+            additionalItems = additionalItems,
+            canLoadMore = false
+        )
+
+        val amountOfHeaders = result.filterIsInstance(ArtListUiItem.Section::class.java).size
+        assertThat(amountOfHeaders).isEqualTo(correctAmountOfHeaders)
+        assertThat(result).containsAtLeast(firstHeader, secondHeader)
+    }
+
+    @Test
+    fun `verify that result has a correct order`() {
+        val firstHeader = ArtListUiItem.Section(artOne.principalOrFirstMaker)
+        val secondHeader = ArtListUiItem.Section(artThree.principalOrFirstMaker)
+        val correctOrder = listOf(
+            firstHeader,
+            ArtListUiItem.Item(artOne),
+            ArtListUiItem.Item(artTwo),
+            secondHeader,
+            ArtListUiItem.Item(artThree),
+            ArtListUiItem.LoadMore
+        )
+
+        val result = merger.merge(
+            oldItems = oldItemsWithLoadMore,
+            additionalItems = additionalItems,
+            canLoadMore = true
+        )
+
+        assertThat(result).isEqualTo(correctOrder)
+    }
+
 }
 

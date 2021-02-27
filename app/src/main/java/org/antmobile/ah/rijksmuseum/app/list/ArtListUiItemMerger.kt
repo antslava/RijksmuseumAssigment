@@ -53,7 +53,6 @@ class ArtListUiItemMerger {
         if (oldItems.isNotEmpty()) {
             val lastItem = oldItems.last()
             if (lastItem is ArtListUiItem.LoadMore) {
-
                 return oldItems.dropLast(1)
             }
         }
