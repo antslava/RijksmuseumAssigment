@@ -1,12 +1,16 @@
 package org.antmobile.ah.rijksmuseum.app.list
 
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.antmobile.ah.rijksmuseum.domain.models.Art
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class ArtListUiItemMergerTest {
 
-    private val merger = ArtListUiItemMerger()
+    private val merger = ArtListUiItemMerger(Dispatchers.Unconfined)
     private val artOne = Art(
         "oneId",
         "oneTitle",
@@ -34,17 +38,18 @@ class ArtListUiItemMergerTest {
     private val additionalItems = arrayListOf(artThree)
 
     @Test
-    fun `when all list are empty and there no more data to load then empty list should be returned`() {
-        val result = merger.merge(
-            oldItems = emptyList(),
-            additionalItems = emptyList(),
-            canLoadMore = false
-        )
-        assertThat(result).isEmpty()
-    }
+    fun `when all list are empty and there no more data to load then empty list should be returned`() =
+        runBlockingTest {
+            val result = merger.merge(
+                oldItems = emptyList(),
+                additionalItems = emptyList(),
+                canLoadMore = false
+            )
+            assertThat(result).isEmpty()
+        }
 
     @Test
-    fun `when can load more is true then last item should be load more`() {
+    fun `when can load more is true then last item should be load more`() = runBlockingTest {
         val additionalItemsSectionAmount = 1
         val expectedSize =
             oldItemsWithLoadMore.size + additionalItems.size + additionalItemsSectionAmount
@@ -58,18 +63,19 @@ class ArtListUiItemMergerTest {
     }
 
     @Test
-    fun `when can load more is true then list should contain one load more item`() {
-        val result = merger.merge(
-            oldItems = oldItemsWithLoadMore,
-            additionalItems = additionalItems,
-            canLoadMore = true
-        )
-        assertThat(result.filterIsInstance<ArtListUiItem.LoadMore>()).hasSize(1)
-        assertThat(result.last()).isInstanceOf(ArtListUiItem.LoadMore::class.java)
-    }
+    fun `when can load more is true then list should contain one load more item`() =
+        runBlockingTest {
+            val result = merger.merge(
+                oldItems = oldItemsWithLoadMore,
+                additionalItems = additionalItems,
+                canLoadMore = true
+            )
+            assertThat(result.filterIsInstance<ArtListUiItem.LoadMore>()).hasSize(1)
+            assertThat(result.last()).isInstanceOf(ArtListUiItem.LoadMore::class.java)
+        }
 
     @Test
-    fun `when can load more is false then last item should not be load more`() {
+    fun `when can load more is false then last item should not be load more`() = runBlockingTest {
         val additionalItemsSectionAmount = 1
         val expectedSize =
             oldItemsWithLoadMore.size - 1 + additionalItems.size + additionalItemsSectionAmount
@@ -83,17 +89,18 @@ class ArtListUiItemMergerTest {
     }
 
     @Test
-    fun `when can load more is false then list should not contain load more item`() {
-        val result = merger.merge(
-            oldItems = oldItemsWithLoadMore,
-            additionalItems = additionalItems,
-            canLoadMore = false
-        )
-        assertThat(result).doesNotContain(ArtListUiItem.LoadMore)
-    }
+    fun `when can load more is false then list should not contain load more item`() =
+        runBlockingTest {
+            val result = merger.merge(
+                oldItems = oldItemsWithLoadMore,
+                additionalItems = additionalItems,
+                canLoadMore = false
+            )
+            assertThat(result).doesNotContain(ArtListUiItem.LoadMore)
+        }
 
     @Test
-    fun `verify that result will contain correct headers`() {
+    fun `verify that result will contain correct headers`() = runBlockingTest {
         val additionalItems = listOf(artOne, artTwo, artThree)
         val correctAmountOfHeaders = 2
         val firstHeader = ArtListUiItem.Section(artOne.principalOrFirstMaker)
@@ -111,7 +118,7 @@ class ArtListUiItemMergerTest {
     }
 
     @Test
-    fun `verify that result has a correct order`() {
+    fun `verify that result has a correct order`() = runBlockingTest {
         val firstHeader = ArtListUiItem.Section(artOne.principalOrFirstMaker)
         val secondHeader = ArtListUiItem.Section(artThree.principalOrFirstMaker)
         val correctOrder = listOf(

@@ -1,19 +1,23 @@
 package org.antmobile.ah.rijksmuseum.app.list
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import org.antmobile.ah.rijksmuseum.domain.models.Art
 
-class ArtListUiItemMerger {
+class ArtListUiItemMerger(
+    private val ioDispatcher: CoroutineDispatcher
+) {
 
-    fun merge(
+    suspend fun merge(
         oldItems: List<ArtListUiItem>,
         additionalItems: List<Art>,
         canLoadMore: Boolean
-    ): List<ArtListUiItem> {
+    ): List<ArtListUiItem> = withContext(ioDispatcher) {
         val cleanedOldItems = removeLoadMoreIfNeeded(oldItems)
         val lastSection = getLastSection(cleanedOldItems)
         val newItems = convertToArtsListItem(additionalItems, lastSection)
 
-        return if (canLoadMore) {
+        return@withContext if (canLoadMore) {
             cleanedOldItems + newItems + listOf<ArtListUiItem>(ArtListUiItem.LoadMore)
         } else {
             cleanedOldItems + newItems

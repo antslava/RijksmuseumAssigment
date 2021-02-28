@@ -45,7 +45,7 @@ val appModule = module {
 
     factory<ErrorConverter> { ErrorConverterImpl(get()) }
 
-    factory { ArtListUiItemMerger() }
+    factory { ArtListUiItemMerger(Dispatchers.IO) }
 }
 
 val domainModule = module {
