@@ -10,8 +10,7 @@ Improvements & next steps
 --------
 Due to the limited amount of my free time, I have to do some considerations of what I left out:
 - Implement empty state
-- Implement options to search items, sort items, etc.
-- Implement Unit Tests for View Models and missing classes.  
+- Implement options to search items, sort items, etc.  
 - Implement UI Tests
 - Improve Design and show more data.
 - Increase the test coverage
