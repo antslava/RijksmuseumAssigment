@@ -21,7 +21,6 @@ import org.antmobile.ah.rijksmuseum.data.repositories.datasource.ArtsRemoteDataS
 import org.antmobile.ah.rijksmuseum.domain.repositories.ArtsRepository
 import org.antmobile.ah.rijksmuseum.domain.usecases.GetArtDetailsByIdUseCase
 import org.antmobile.ah.rijksmuseum.domain.usecases.GetListOfArtsUseCase
-import org.antmobile.ah.rijksmuseum.utils.CoroutinesDispatcherProvider
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -35,22 +34,14 @@ val appModule = module {
 
     viewModel { ArtDetailViewModel(get(), get()) }
 
-    single {
-        CoroutinesDispatcherProvider(
-            Dispatchers.Main,
-            Dispatchers.Default,
-            Dispatchers.IO
-        )
-    }
-
     factory<ErrorConverter> { ErrorConverterImpl(get()) }
 
     factory { ArtListUiItemMerger(Dispatchers.IO) }
 }
 
 val domainModule = module {
-    factory { GetListOfArtsUseCase(get(), get()) }
-    factory { GetArtDetailsByIdUseCase(get(), get()) }
+    factory { GetListOfArtsUseCase(get(), Dispatchers.IO) }
+    factory { GetArtDetailsByIdUseCase(get(), Dispatchers.IO) }
 }
 
 val dataModule = module {

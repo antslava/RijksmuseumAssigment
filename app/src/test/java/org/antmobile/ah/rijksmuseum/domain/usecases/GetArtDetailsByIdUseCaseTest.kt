@@ -6,7 +6,6 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.antmobile.ah.rijksmuseum.domain.exceptions.WrongArtIdException
 import org.antmobile.ah.rijksmuseum.domain.repositories.ArtsRepository
-import org.antmobile.ah.rijksmuseum.utils.CoroutinesDispatcherProvider
 import org.antmobile.ah.rijksmuseum.utils.Result
 import org.junit.Before
 import org.junit.Test
@@ -18,18 +17,13 @@ import org.mockito.Mockito.verifyZeroInteractions
 class GetArtDetailsByIdUseCaseTest {
 
     private val testDispatcher = TestCoroutineDispatcher()
-    private val dispatchers = CoroutinesDispatcherProvider(
-        testDispatcher,
-        testDispatcher,
-        testDispatcher
-    )
     private lateinit var useCase: GetArtDetailsByIdUseCase
     private lateinit var fakeRepository: ArtsRepository
 
     @Before
     fun setUp() {
         fakeRepository = Mockito.mock(ArtsRepository::class.java)
-        useCase = GetArtDetailsByIdUseCase(fakeRepository, dispatchers)
+        useCase = GetArtDetailsByIdUseCase(fakeRepository, testDispatcher)
     }
 
     @Test

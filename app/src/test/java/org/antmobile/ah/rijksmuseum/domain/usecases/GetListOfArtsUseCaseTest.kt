@@ -4,7 +4,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.antmobile.ah.rijksmuseum.domain.repositories.ArtsRepository
-import org.antmobile.ah.rijksmuseum.utils.CoroutinesDispatcherProvider
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -14,18 +13,13 @@ import org.mockito.Mockito.verify
 class GetListOfArtsUseCaseTest {
 
     private val testDispatcher = TestCoroutineDispatcher()
-    private val dispatchers = CoroutinesDispatcherProvider(
-        testDispatcher,
-        testDispatcher,
-        testDispatcher
-    )
     private lateinit var useCase: GetListOfArtsUseCase
     private lateinit var fakeRepository: ArtsRepository
 
     @Before
     fun setUp() {
         fakeRepository = mock(ArtsRepository::class.java)
-        useCase = GetListOfArtsUseCase(fakeRepository, dispatchers)
+        useCase = GetListOfArtsUseCase(fakeRepository, testDispatcher)
     }
 
     @Test
