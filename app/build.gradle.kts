@@ -12,7 +12,7 @@ android {
     buildToolsVersion(Versions.buildTools)
 
     defaultConfig {
-        applicationId = "org.antmobile.ah.rijksmuseum"
+        applicationId = "org.antmobile.rijksmuseum"
         minSdk = Versions.minSdk
         targetSdk = Versions.targetSdk
         versionCode = 1
