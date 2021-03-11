@@ -94,7 +94,9 @@ dependencies {
     androidTestImplementation(Libraries.androidTestTruth)
     androidTestImplementation(Libraries.androidTestRules)
     androidTestImplementation(Libraries.androidTestRunner)
-    androidTestImplementation(Libraries.androidCoreTesting)
+    androidTestImplementation(Libraries.androidCoreTesting) {
+        exclude(group = "org.mockito", module = "mockito-core")
+    }
     androidTestImplementation(Libraries.androidTestJUnit)
     androidTestImplementation(Libraries.espressoCore)
 }

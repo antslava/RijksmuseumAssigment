@@ -11,7 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyZeroInteractions
+import org.mockito.Mockito.verifyNoInteractions
 
 @ExperimentalCoroutinesApi
 class GetArtDetailsByIdUseCaseTest {
@@ -31,7 +31,7 @@ class GetArtDetailsByIdUseCaseTest {
         testDispatcher.runBlockingTest {
             val result = useCase.execute("")
 
-            verifyZeroInteractions(fakeRepository)
+            verifyNoInteractions(fakeRepository)
             assertThat(result).isInstanceOf(Result.Failure::class.java)
             val failure = result as Result.Failure
             assertThat(failure.exception).isInstanceOf(WrongArtIdException::class.java)
@@ -42,7 +42,7 @@ class GetArtDetailsByIdUseCaseTest {
         testDispatcher.runBlockingTest {
             val result = useCase.execute("   ")
 
-            verifyZeroInteractions(fakeRepository)
+            verifyNoInteractions(fakeRepository)
             assertThat(result).isInstanceOf(Result.Failure::class.java)
             val failure = result as Result.Failure
             assertThat(failure.exception).isInstanceOf(WrongArtIdException::class.java)
