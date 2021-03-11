@@ -18,11 +18,14 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class ArtListFragment : Fragment() {
 
     private var _binding: ArtListFragmentBinding? = null
-    private val binding get() = _binding!!
+
+    @Suppress("UnsafeCallOnNullableType")
+    private val binding
+        get() = _binding!!
 
     private val viewModel by viewModel<ArtListViewModel>()
-    private val artsListAdapter: ArtsListAdapter =
-        ArtsListAdapter { art -> onArtClicked(art) }
+    private val artListAdapter: ArtListAdapter =
+        ArtListAdapter { art -> onArtClicked(art) }
 
     private var errorView: Snackbar? = null
 
@@ -70,7 +73,7 @@ class ArtListFragment : Fragment() {
             override fun isDataLoading(): Boolean = viewModel.isContentLoading()
         }
         binding.content.apply {
-            adapter = artsListAdapter
+            adapter = artListAdapter
             layoutManager = linearLayoutManager
             addOnScrollListener(infiniteScrollListener)
             setHasFixedSize(true)
@@ -88,7 +91,7 @@ class ArtListFragment : Fragment() {
             }
         }
         viewModel.artListUiItems.observe(viewLifecycleOwner) {
-            artsListAdapter.submitList(it)
+            artListAdapter.submitList(it)
         }
         viewModel.artListLoadingError.observe(viewLifecycleOwner) { error ->
             if (error == null) {

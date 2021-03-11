@@ -13,7 +13,7 @@ import org.antmobile.rijksmuseum.databinding.ArtListItemBinding
 import org.antmobile.rijksmuseum.databinding.ArtListSectionItemBinding
 import org.antmobile.rijksmuseum.domain.models.Art
 
-class ArtsListAdapter(
+class ArtListAdapter(
     private val onItemClicked: (Art) -> Unit
 ) : ListAdapter<ArtListUiItem, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
@@ -24,7 +24,7 @@ class ArtsListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (viewType) {
+        return when (viewType) {
             TYPE_ITEM -> {
                 val binding =
                     ArtListItemBinding.inflate(
@@ -32,7 +32,9 @@ class ArtsListAdapter(
                         parent,
                         false
                     )
-                return ArtViewHolder(binding) { position -> onItemClicked((getItem(position) as ArtListUiItem.Item).art) }
+                ArtViewHolder(binding) { position ->
+                    onItemClicked((getItem(position) as ArtListUiItem.Item).art)
+                }
             }
             TYPE_SECTION -> {
                 val binding =
@@ -41,15 +43,15 @@ class ArtsListAdapter(
                         parent,
                         false
                     )
-                return SectionViewHolder(binding)
+                SectionViewHolder(binding)
             }
             TYPE_LOAD_MORE -> {
-                return LoadingMoreViewHolder(
+                LoadingMoreViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.art_list_infinite_loading_item, parent, false)
                 )
             }
-            else -> throw Exception("Unsupported view type. viewType=$viewType")
+            else -> throw IllegalStateException("Unsupported view type. viewType=$viewType")
         }
 
     }

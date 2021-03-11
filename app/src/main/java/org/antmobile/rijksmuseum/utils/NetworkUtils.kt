@@ -8,6 +8,7 @@ import java.io.IOException
  * Wrap a suspending API [call] in try/catch. In case an exception is thrown, a [Result.Failure] is
  * created based on the [errorMessage].
  */
+@Suppress("TooGenericExceptionCaught")
 suspend fun <T : Any> safeApiCall(call: suspend () -> Result<T>, errorMessage: String): Result<T> {
     return try {
         call()

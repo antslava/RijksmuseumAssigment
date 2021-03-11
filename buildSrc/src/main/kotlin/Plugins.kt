@@ -10,3 +10,6 @@ val PluginDependenciesSpec.kotlinAndroid: PluginDependencySpec
 
 val PluginDependenciesSpec.kotlinKapt: PluginDependencySpec
     get() = id("org.jetbrains.kotlin.kapt")
+
+val PluginDependenciesSpec.detekt: PluginDependencySpec
+    get() = id("io.gitlab.arturbosch.detekt").version("1.16.0")

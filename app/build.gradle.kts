@@ -1,10 +1,12 @@
 import Dependencies.Libraries
 import Dependencies.Versions
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 plugins {
     androidApplication
     kotlinAndroid
     kotlinKapt
+    detekt
 }
 
 android {
@@ -51,6 +53,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+configure<DetektExtension> {
+    config = files("../config/detekt/detekt.yml")
 }
 
 dependencies {

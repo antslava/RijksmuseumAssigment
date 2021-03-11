@@ -17,7 +17,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class ArtDetailsFragment : Fragment() {
 
     private var _binding: ArtDetailsFragmentBinding? = null
-    private val binding get() = _binding!!
+
+    @Suppress("UnsafeCallOnNullableType")
+    private val binding
+        get() = _binding!!
 
     private val viewModel by viewModel<ArtDetailViewModel>()
 
@@ -115,6 +118,8 @@ class ArtDetailsFragment : Fragment() {
         }
 
         private const val KEY_ART_ID = "ArtDetailsFragment.artsId"
+
+        @Suppress("UnsafeCallOnNullableType")
         private val Bundle.artId: String
             get() = getString(KEY_ART_ID)!!
     }

@@ -6,6 +6,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.antmobile.rijksmuseum.BuildConfig
+import org.antmobile.rijksmuseum.Constants
 import org.antmobile.rijksmuseum.app.converters.ErrorConverter
 import org.antmobile.rijksmuseum.app.converters.ErrorConverterImpl
 import org.antmobile.rijksmuseum.app.details.ArtDetailViewModel
@@ -60,15 +61,15 @@ val dataModule = module {
     single {
         val appContext: Context = get()
         Cache(
-            directory = File(appContext.cacheDir, "http_cache"),
-            maxSize = 50L * 1024L * 1024L
+            directory = File(appContext.cacheDir, Constants.CACHE_DIRECTORY),
+            maxSize = Constants.CACHE_SIZE
         )
     }
 
     single {
         OkHttpClient.Builder()
             .cache(get())
-            .addInterceptor(AuthInterceptor("2oWFayp7"))
+            .addInterceptor(AuthInterceptor(Constants.API_KEY))
             .apply {
                 if (BuildConfig.DEBUG) {
                     // Will be removed by proguard.
