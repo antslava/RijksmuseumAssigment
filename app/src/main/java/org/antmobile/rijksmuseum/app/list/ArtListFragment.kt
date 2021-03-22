@@ -13,19 +13,17 @@ import org.antmobile.rijksmuseum.app.details.ArtDetailsFragment
 import org.antmobile.rijksmuseum.databinding.ArtListFragmentBinding
 import org.antmobile.rijksmuseum.domain.models.Art
 import org.antmobile.rijksmuseum.utils.InfiniteScrollListener
+import org.antmobile.rijksmuseum.utils.autoCleaned
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ArtListFragment : Fragment() {
 
-    private var _binding: ArtListFragmentBinding? = null
-
-    @Suppress("UnsafeCallOnNullableType")
-    private val binding
-        get() = _binding!!
+    private var binding: ArtListFragmentBinding by autoCleaned()
 
     private val viewModel by viewModel<ArtListViewModel>()
-    private val artListAdapter: ArtListAdapter =
+    private val artListAdapter: ArtListAdapter by autoCleaned {
         ArtListAdapter { art -> onArtClicked(art) }
+    }
 
     private var errorView: Snackbar? = null
 
@@ -34,7 +32,7 @@ class ArtListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = ArtListFragmentBinding.inflate(inflater, container, false)
+        binding = ArtListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -43,12 +41,6 @@ class ArtListFragment : Fragment() {
 
         initUi()
         initObservers()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding.content.adapter = null
-        _binding = null
     }
 
     private fun initUi() {

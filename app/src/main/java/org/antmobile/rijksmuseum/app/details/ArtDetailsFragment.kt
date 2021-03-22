@@ -12,15 +12,12 @@ import org.antmobile.rijksmuseum.R
 import org.antmobile.rijksmuseum.databinding.ArtDetailsFragmentBinding
 import org.antmobile.rijksmuseum.domain.models.ArtDetails
 import org.antmobile.rijksmuseum.utils.GlideImageLoadedListener
+import org.antmobile.rijksmuseum.utils.autoCleaned
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ArtDetailsFragment : Fragment() {
 
-    private var _binding: ArtDetailsFragmentBinding? = null
-
-    @Suppress("UnsafeCallOnNullableType")
-    private val binding
-        get() = _binding!!
+    private var binding: ArtDetailsFragmentBinding by autoCleaned()
 
     private val viewModel by viewModel<ArtDetailViewModel>()
 
@@ -31,7 +28,7 @@ class ArtDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = ArtDetailsFragmentBinding.inflate(inflater, container, false)
+        binding = ArtDetailsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -90,8 +87,8 @@ class ArtDetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        errorView?.dismiss()
         errorView = null
-        _binding = null
     }
 
     private fun renderContent(artDetails: ArtDetails) {
@@ -103,7 +100,7 @@ class ArtDetailsFragment : Fragment() {
             .load(artDetails.imageUrl)
             .transform(CenterCrop())
             .addListener(GlideImageLoadedListener {
-                _binding?.imageLoading?.visibility = View.GONE
+                binding.imageLoading.visibility = View.GONE
             })
             .into(binding.image)
     }

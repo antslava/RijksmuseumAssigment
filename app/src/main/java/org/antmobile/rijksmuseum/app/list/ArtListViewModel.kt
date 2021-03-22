@@ -56,7 +56,7 @@ class ArtListViewModel(
         }
     }
 
-    private suspend fun load(page: Int) {
+    private fun load(page: Int) {
         if (isContentLoading()) {
             return
         }

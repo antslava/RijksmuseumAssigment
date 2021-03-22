@@ -68,6 +68,10 @@ dependencies {
     implementation(Libraries.liveData)
     implementation(Libraries.viewModel)
     implementation(Libraries.recyclerview)
+    implementation(Libraries.lifecycleCommon)
+    implementation(Libraries.lifecycleRuntime)
+
+    debugImplementation(Libraries.leakCanary)
 
     //Glide
     implementation(Libraries.glide) {

@@ -10,6 +10,8 @@ object Dependencies {
 
         const val koin = "2.2.2"
 
+        const val leakCanary = "2.6"
+
         const val appcompat = "1.2.0"
         const val androidXCore = "1.3.2"
         const val androidXLifecycle = "2.3.0"
@@ -57,10 +59,16 @@ object Dependencies {
         const val androidCore = "androidx.core:core-ktx:${Versions.androidXCore}"
         const val constraintLayout =
             "androidx.constraintlayout:constraintlayout:${Versions.constraint}"
+        const val lifecycleCommon =
+            "androidx.lifecycle:lifecycle-common-java8:${Versions.androidXLifecycle}"
+        const val lifecycleRuntime =
+            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.androidXLifecycle}"
 
         const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
         const val glideCompiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
         const val glideOkHttp = "com.github.bumptech.glide:okhttp3-integration:${Versions.glide}"
+
+        const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"
 
         const val koinAndroid = "org.koin:koin-android:${Versions.koin}"
         const val koinViewModel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
